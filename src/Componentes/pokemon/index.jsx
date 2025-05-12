@@ -1,17 +1,28 @@
-import { useState,useEffect} from 'react'
+import { useState,useEffect,useContext} from 'react'
+import { AppContext } from '../../contexto/contexto';
 import { useParams } from "react-router-dom"; 
 import './style.css'
 
 function Pokemon() {
   const { name } = useParams(); 
   const [datapoke, setDatapoke] = useState([]);
+  const { favoritos, setFavoritos } = useContext(AppContext);
+  const esFavorito = favoritos.some(p => p.id === datapoke.id);
 
   useEffect(() => {
     fetch(`https://pokeapi.co/api/v2/pokemon/${name}`)
       .then(response => response.json())
       .then(responseData => setDatapoke(responseData))
       .catch(error => console.error("Error:", error));
-  }, [name]); 
+  }, [name]);
+  
+      const toggleFavorito = () => {
+    if (esFavorito) {
+      setFavoritos(favoritos.filter(p => p.id !== datapoke.id));
+    } else {
+      setFavoritos([...favoritos, { id: datapoke.id, nombre: datapoke.name }]);
+    }
+  };
 
   if (!datapoke || !datapoke.id) return <p>Cargando...</p>;
   return (
@@ -33,7 +44,11 @@ function Pokemon() {
         <p>Velocidad: {datapoke.stats[5].base_stat}</p>
         <p>Ataque: {datapoke.stats[1].base_stat} Defensa: {datapoke.stats[2].base_stat}</p>
         <p>Ataque Especial: {datapoke.stats[3].base_stat} Defensa Especial: {datapoke.stats[4].base_stat}</p>
-    
+
+        <button onClick={toggleFavorito}>
+          {esFavorito ? '❤️' : '🤍'}
+        </button>
+
     </div>
   );
 }
