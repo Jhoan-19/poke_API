@@ -11,6 +11,9 @@ import Lista from './Componentes/lista'
 import Pokemon from './Componentes/pokemon'
 import Usuario from './Componentes/usuarios'
 import Menu from './Componentes/menu';
+import Login from './login'; // Asegúrate de que la ruta sea correcta
+import Registro from './login/registro'; // Importa el componente
+import Administrador from './admin/Administrador';
 
 function App() {
 
@@ -25,6 +28,9 @@ function App() {
             <Route path="/capturados" element={<Capturados />} />
             <Route path="/favoritos" element={<Favoritos />} />
             <Route path="/pokemon/:name" element={<Pokemon />} />
+            <Route path="/login" element={<Login />} /> {/* <-- Agrega esta línea */}
+            <Route path="/registro" element={<Registro />} /> {/* Agrega esta línea */}
+            <Route path="/admin" element={<Administrador />} />
           </Routes>
       </Router>
 
